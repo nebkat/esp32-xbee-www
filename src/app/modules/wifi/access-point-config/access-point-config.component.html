@@ -1,0 +1,61 @@
+<mat-card class="d-inline-block mb-3">
+  <form [formGroup]="form">
+    <mat-card-title>
+      WiFi Access Point
+      <mat-slide-toggle formControlName="enabled" class="float-right"></mat-slide-toggle>
+    </mat-card-title>
+    <mat-card-subtitle>
+      Hotspot/Tethering
+    </mat-card-subtitle>
+    <mat-card-content [class.disabled]="!form.get('enabled').value">
+      <div fxLayout="flex" fxLayoutGap="0.5rem">
+        <mat-form-field appearance="outline">
+          <mat-label>SSID</mat-label>
+          <input matInput formControlName="ssid" type="text" data-lpignore="true">
+          <button mat-icon-button
+                  matSuffix
+                  [disabled]="form.get('hidden').disabled"
+                  (click)="form.get('hidden').setValue(!form.get('hidden').value)"
+                  matTooltip="Access point SSID visibility (if hidden, the SSID will not be visible in scans)">
+            <mat-icon>{{form.get('hidden').value ? 'visibility_off' : 'visibility'}}</mat-icon>
+          </button>
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Security key</mat-label>
+          <input matInput formControlName="key" type="password" data-lpignore="true">
+        </mat-form-field>
+      </div>
+      <div fxLayout="flex" fxLayoutGap="0.5rem" formGroupName="ip" class="warning-box warning-box-pad d-inline-flex">
+        <mat-form-field appearance="outline">
+          <mat-label>Gateway IP</mat-label>
+          <app-ip-address-input
+            formControlName="gw"
+            valueType="number"
+            [disabledParts]="[true, true, false, false]"
+            placeholder="192.168.4.1"
+            [errorStateMatcher]="ipErrorStateMatcher"
+          ></app-ip-address-input>
+          <mat-hint matTooltip="The range of IP addresses that will be available to devices connected to the access point">
+            {{subnetIpRange?.map(ipToString).join(' - ')}}
+          </mat-hint>
+          <mat-error *ngIf="form.get(['ip', 'gw']).hasError('required')">
+            Gateway IP address is required
+          </mat-error>
+          <mat-error *ngIf="form.get(['ip']).hasError('network')">
+            IP address cannot be network or broadcast address (often .0/.255 addresses)
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="outline" style="width: 80px">
+          <mat-label>Subnet</mat-label>
+          <mat-select formControlName="mask">
+            <mat-option *ngFor="let i of [24, 25, 26, 27, 28, 29, 30]" [value]="subnetToMask(i)">/ {{i}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </mat-card-content>
+  </form>
+  <mat-card-actions align="end">
+    <button mat-button (click)="onResetClick()" [disabled]="!changed">RESET</button>
+    <button mat-button (click)="onSaveClick()" [disabled]="!changed || !form.valid">SAVE</button>
+  </mat-card-actions>
+</mat-card>

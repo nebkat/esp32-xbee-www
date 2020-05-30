@@ -1,0 +1,67 @@
+@import '~@angular/material/core/theming/palette';
+@import '~@angular/material/core/theming/theming';
+@import '~@angular/material/core/style/elevation';
+@import '~@angular/material/core/style/form-common';
+@import '~@angular/material/core/typography/typography-utils';
+
+
+@mixin app-dialog-select-theme($theme) {
+  $foreground: map-get($theme, foreground);
+  $background: map-get($theme, background);
+  $primary: map-get($theme, primary);
+  $accent: map-get($theme, accent);
+  $warn: map-get($theme, warn);
+
+  .app-dialog-select-value {
+    color: mat-color($foreground, text);
+  }
+
+  .app-dialog-select-placeholder {
+    color: _mat-control-placeholder-color($theme);
+  }
+
+  .app-dialog-select-disabled .app-dialog-select-value {
+    color: mat-color($foreground, disabled-text);
+  }
+
+  .app-dialog-select-arrow {
+    color: mat-color($foreground, secondary-text);
+  }
+
+  .mat-form-field {
+    &.mat-focused {
+      &.mat-primary .app-dialog-select-arrow {
+        color: mat-color($primary, text);
+      }
+
+      &.mat-accent .app-dialog-select-arrow {
+        color: mat-color($accent, text);
+      }
+
+      &.mat-warn .app-dialog-select-arrow {
+        color: mat-color($warn, text);
+      }
+    }
+
+    .app-dialog-select.app-dialog-select-invalid .app-dialog-select-arrow {
+      color: mat-color($warn, text);
+    }
+
+    .app-dialog-select.app-dialog-select-disabled .app-dialog-select-arrow {
+      color: mat-color($foreground, disabled-text);
+    }
+  }
+}
+
+@mixin app-dialog-select-typography($config) {
+  // The unit-less line-height from the font config.
+  $line-height: mat-line-height($config, input);
+
+  .app-dialog-select {
+    font-family: mat-font-family($config);
+  }
+
+  .app-dialog-select-trigger {
+    height: $line-height * 1em;
+  }
+}

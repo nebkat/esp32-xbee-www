@@ -1,0 +1,10 @@
+mat-card {
+  mat-card-content {
+    transition: all ease-in-out 0.25s;
+
+    &.disabled {
+      filter: blur(5px);
+      pointer-events: none;
+    }
+  }
+}

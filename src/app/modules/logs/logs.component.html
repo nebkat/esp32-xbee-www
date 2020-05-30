@@ -1,0 +1,36 @@
+<h1>Logs</h1>
+<mat-card>
+  <mat-card-content>
+    <mat-table [dataSource]="logs">
+      <ng-container matColumnDef="index">
+        <mat-header-cell *matHeaderCellDef>#</mat-header-cell>
+        <mat-cell *matCellDef="let row">{{row.index}}</mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="time">
+        <mat-header-cell *matHeaderCellDef>Time</mat-header-cell>
+        <mat-cell *matCellDef="let row">{{row.time}}</mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="level">
+        <mat-header-cell *matHeaderCellDef>Level</mat-header-cell>
+        <mat-cell *matCellDef="let row">
+          <button mat-flat-button class="badge level {{row.level}}">{{row.level.toUpperCase()}}</button>
+        </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="tag">
+        <mat-header-cell *matHeaderCellDef>Tag</mat-header-cell>
+        <mat-cell *matCellDef="let row">{{row.tag}}</mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="comment">
+        <mat-header-cell *matHeaderCellDef>Comment</mat-header-cell>
+        <mat-cell *matCellDef="let row">{{row.comment}}</mat-cell>
+      </ng-container>
+
+      <mat-header-row *matHeaderRowDef="columnsToDisplay"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: columnsToDisplay"></mat-row>
+    </mat-table>
+  </mat-card-content>
+</mat-card>

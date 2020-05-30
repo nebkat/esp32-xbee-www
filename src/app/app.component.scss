@@ -1,0 +1,25 @@
+// Import theming functions
+@import '~@angular/material/theming';
+
+mat-sidenav-container, mat-sidenav, mat-sidenav-content {
+  height: 100%;
+}
+
+mat-sidenav-container {
+  overflow-x: hidden;
+}
+
+mat-nav-list {
+  width: 300px;
+  max-width: 100vw;
+
+  a.active {
+    color: #0288d1; // TODO
+  }
+}
+
+:host ::ng-deep #connection-spinner {
+  circle {
+    stroke: green;
+  }
+}

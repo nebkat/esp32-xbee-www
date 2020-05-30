@@ -1,0 +1,19 @@
+<h1>Hardware</h1>
+
+
+<app-led-color-picker></app-led-color-picker>
+
+<h2>UART</h2>
+<div fxLayout="row wrap" fxLayoutGap="1rem grid" class="mb-3">
+  <div fxFlex="33" fxFlex.lt-md="100" *ngFor="let i of [0, 1, 2]">
+    <app-uart-form [(data)]="data.uarts[i]"></app-uart-form>
+  </div>
+</div>
+
+<h2>LEDs</h2>
+<div fxLayout="row wrap" fxLayoutGap="1rem grid" class="mb-3">
+  <div fxFlex="33" fxFlex.lt-md="100" *ngFor="let led of data.leds; let i = index">
+    <app-led-form [(data)]="data.leds[i]"></app-led-form>
+  </div>
+</div>
+

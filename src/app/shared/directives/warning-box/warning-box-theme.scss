@@ -1,0 +1,24 @@
+@import '~@angular/material/theming';
+
+$warning-box-border-radius: 5px;
+$warning-box-padding: 0.5em;
+$warning-box-margin: -$warning-box-padding;
+$warning-box-stripe-width: 10px;
+
+@mixin app-warning-box-theme($theme) {
+  $foreground: map-get($theme, foreground);
+  $background: map-get($theme, background);
+  $primary: map-get($theme, primary);
+  $accent: map-get($theme, accent);
+  $warn: map-get($theme, warn);
+
+  .warning-box {
+    &.warning-box-pad {
+      padding: $warning-box-padding;
+      margin: $warning-box-margin;
+    }
+
+    border-radius: $warning-box-border-radius;
+    border: 1px solid mat-color($warn);
+  }
+}

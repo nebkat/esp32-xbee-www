@@ -1,0 +1,4 @@
+<ng-container *ngFor="let i of [0, 1, 2, 3, 4, 5]; let first = first">
+  <ng-container *ngIf="!first">:</ng-container>
+  <input appMacAddressInputPart type="text" [placeholder]="_placeholders[i]" [(ngModel)]="_values[i]" (ngModelChange)="onInputChange()" [disabled]="disabled">
+</ng-container>

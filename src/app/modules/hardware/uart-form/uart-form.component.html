@@ -1,0 +1,55 @@
+<mat-card appWarningBox>
+  <form [formGroup]="form">
+    <mat-card-title>
+      UART {{data.number}}
+      <mat-slide-toggle *ngIf="data.number != 1" formControlName="enabled" class="float-right"></mat-slide-toggle>
+    </mat-card-title>
+    <mat-card-subtitle>
+      <input type="text" matInput formControlName="name" maxlength="16" placeholder="(Unnamed)">
+    </mat-card-subtitle>
+    <mat-card-content [class.disabled]="!form.get('enabled').value" fxLayout="flex wrap" fxLayoutGap="0.5rem grid">
+      <ng-container formGroupName="pins">
+        <mat-form-field appearance="outline" fxFlex="25" *ngFor="let pin of requiredPins" [floatLabel]="!pin.required ? 'always' : 'auto'">
+          <mat-label>{{pin.title}} pin</mat-label>
+          <app-dialog-select [formControlName]="pin.name" [dialogComponent]="GpioDialogComponent" #selection [placeholder]="!pin.required ? 'Disabled' : null">
+            <app-dialog-select-trigger>GPIO {{selection.value}}</app-dialog-select-trigger>
+          </app-dialog-select>
+        </mat-form-field>
+      </ng-container>
+      <ng-container formGroupName="data">
+        <mat-form-field appearance="outline" fxFlex="25">
+          <mat-label>Baud rate</mat-label>
+          <input type="number" matInput formControlName="baudRate" [matAutocomplete]="auto">
+          <mat-autocomplete #auto="matAutocomplete">
+            <mat-option *ngFor="let option of [9600, 19200, 38400, 57600, 115200, 230400, 460800, 921600]" [value]="option">
+              {{option}}
+            </mat-option>
+          </mat-autocomplete>
+          <mat-error *ngIf="!!form.get(['data', 'baudRate']).errors?.min || !!form.get(['data', 'baudRate']).errors?.max || !!form.get(['data', 'baudRate']).errors?.pattern">
+            Must be an integer <strong>between 1 and 5,000,000</strong>
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="outline" fxFlex="25">
+          <mat-label>Data bits</mat-label>
+          <mat-select formControlName="dataBits">
+            <mat-option *ngFor="let b of [5, 6, 7, 8]" [value]="b">{{b}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field appearance="outline" fxFlex="25">
+          <mat-label>Stop bits</mat-label>
+          <mat-select formControlName="stopBits">
+            <mat-option *ngFor="let b of [1, 1.5, 2]" [value]="b">{{b}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field appearance="outline" fxFlex="25" floatLabel="always">
+          <mat-label>Parity</mat-label>
+          <mat-select formControlName="parity" placeholder="Disabled">
+            <mat-option [value]="null">Disabled</mat-option>
+            <mat-option value="odd">Odd</mat-option>
+            <mat-option value="even">Even</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </ng-container>
+    </mat-card-content>
+  </form>
+</mat-card>

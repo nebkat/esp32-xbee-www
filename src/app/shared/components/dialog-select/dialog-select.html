@@ -1,0 +1,7 @@
+<div class="app-dialog-select-value" [ngSwitch]="empty">
+  <span class="app-dialog-select-placeholder" *ngSwitchCase="true">{{placeholder || '\u00A0'}}</span>
+  <span class="app-dialog-select-value-text" *ngSwitchCase="false" [ngSwitch]="!!customTrigger">
+    <span *ngSwitchDefault>{{value || '\u00A0'}}</span>
+    <ng-content select="app-dialog-select-trigger" *ngSwitchCase="true"></ng-content>
+  </span>
+</div>

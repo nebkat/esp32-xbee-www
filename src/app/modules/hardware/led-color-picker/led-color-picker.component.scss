@@ -1,0 +1,90 @@
+:host {
+  padding: 20px;
+  display: inline-block;
+}
+
+.led {
+  width: 100px;
+  height: 100px;
+  padding: 8px;
+  background: #fefefe linear-gradient(to bottom right, #ffffff 0%, #bbbbbb 50%, transparent 50%) no-repeat;
+  background-size: 25px 25px;
+
+  .bevel {
+    width: 84px;
+    height: 84px;
+    padding: 10px;
+    box-sizing: border-box;
+
+    border-radius: 50%;
+    background: linear-gradient(to bottom right, #999999 0%, #cccccc 100%);
+  }
+
+  .patterns, .output {
+    position: absolute;
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+  }
+
+  .patterns {
+    background: black;
+  }
+
+  .output {
+    background: currentColor;
+    box-shadow: 0 0 10px currentColor;
+  }
+}
+
+.sliders {
+  width: 200px;
+
+  .hue .gradient {
+    background: linear-gradient(to right, #ff0000 0%, #ffff00 17%, #00ff00 33%, #00ffff 50%, #0000ff 67%, #ff00ff 83%, #ff0000 100%);
+  }
+
+  .saturation .gradient {
+    background: linear-gradient(to right, #ffffff 0%, #ff0000 100%);
+  }
+
+  .brightness .gradient {
+    background: linear-gradient(to bottom right, #000000 45%, #ff0000 50%);
+  }
+}
+
+::ng-deep {
+  .mat-slider {
+    &.mat-slider-horizontal {
+      .mat-slider-wrapper {
+        top: 18px;
+      }
+
+      .mat-slider-track-wrapper {
+        height: 12px;
+        border-radius: 10px
+      }
+
+      .mat-slider-track-background, .mat-slider-track-fill {
+        height: 100%;
+      }
+
+      .mat-slider-track-fill {
+        background-color: blue;
+      }
+    }
+
+    &.mat-accent .mat-slider-thumb {
+      height: 30px;
+      width: 30px;
+      background-color: white;
+      border: solid 2px gray;
+      bottom: -20px;
+      right: -20px;
+    }
+
+    &.mat-slider-min-value:not(.mat-slider-thumb-label-showing) .mat-slider-thumb {
+      background-color: white;
+    }
+  }
+}

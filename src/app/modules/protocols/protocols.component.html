@@ -1,0 +1,80 @@
+<h1>Protocols</h1>
+
+<form class="d-none">
+  <mat-form-field>
+    <input matNativeControl type="text">
+  </mat-form-field>
+</form>
+<div fxLayout="row wrap" fxLayoutGap="1rem grid">
+  <div fxFlex="50">
+    <mat-card class="mb-3 mat-elevation-z3">
+      <mat-card-title>NTRIP Casters</mat-card-title>
+      <mat-card-subtitle>Local NTRIP caster to provide data streams to NTRIP clients or receive data from NTRIP servers</mat-card-subtitle>
+    </mat-card>
+    <div fxLayout="row wrap" fxLayoutGap="1rem grid" class="mb-3">
+      <ng-container *ngFor="let c of ntripCasters">
+        <div fxFlex="25">
+          <mat-card class="mat-elevation-z2">
+            <mat-card-title>
+              <input type="text" matInput [(ngModel)]="c.id" maxlength="16" placeholder="Caster">
+            </mat-card-title>
+            <mat-card-subtitle class="mb-0">Port: {{c.port}}</mat-card-subtitle>
+            <mat-card-actions>
+              <button mat-button class="float-right">EDIT</button>
+              <div class="clearfix"></div>
+            </mat-card-actions>
+          </mat-card>
+        </div>
+        <div fxFlex="75" fxLayout="row wrap" fxLayoutGap="1rem grid" class="pr-0">
+          <div fxFlex="33.33"><a class="card-outline card-outline-half">Add New Mountpoint</a></div>
+          <div fxFlex="33.33"><a class="card-outline card-outline-half">Add New Mountpoint</a></div>
+          <div fxFlex="33.33"><a class="card-outline card-outline-half">Add New Mountpoint</a></div>
+        </div>
+      </ng-container>
+      <div fxFlex="25"><a class="card-outline">Add New Caster</a></div>
+      <div fxFlex="25"><a class="card-outline">Add New Caster</a></div>
+      <div fxFlex="25"><a class="card-outline">Add New Caster</a></div>
+      <div fxFlex="25"><a class="card-outline">Add New Caster</a></div>
+    </div>
+  </div>
+  <div fxFlex="50">
+    <mat-card class="mb-3 mat-elevation-z3">
+      <mat-card-title>NTRIP Servers/Clients</mat-card-title>
+      <mat-card-subtitle>NTRIP server/client to upload data to or or download data from a remote NTRIP caster</mat-card-subtitle>
+    </mat-card>
+    <div fxLayout="row wrap" fxLayoutGap="1rem grid" class="mb-3">
+      <div fxFlex="25"><a class="card-outline">Add New Server</a></div>
+      <div fxFlex="25"><a class="card-outline">Add New Client</a></div>
+    </div>
+  </div>
+  <div fxFlex="50">
+    <mat-card class="mb-3 mat-elevation-z3">
+      <mat-card-title>TCP/UDP Socket Servers</mat-card-title>
+      <mat-card-subtitle>TCP/UDP socket server to accept connections from remote clients</mat-card-subtitle>
+    </mat-card>
+    <div fxLayout="row wrap" fxLayoutGap="1rem grid" class="mb-3">
+      <div fxFlex="25"><a class="card-outline">Add New TCP Server</a></div>
+      <div fxFlex="25"><a class="card-outline">Add New UDP Server</a></div>
+    </div>
+  </div>
+  <div fxFlex="50">
+    <mat-card class="mb-3 mat-elevation-z3">
+      <mat-card-title>TCP/UDP Socket Clients</mat-card-title>
+      <mat-card-subtitle>TCP/UDP client to connect to remote servers</mat-card-subtitle>
+    </mat-card>
+    <div fxLayout="row wrap" fxLayoutGap="1rem grid" class="mb-3">
+
+      <div fxFlex="25"><a class="card-outline">Add New TCP Client</a></div>
+      <div fxFlex="25"><a class="card-outline">Add New UDP Client</a></div>
+    </div>
+  </div>
+  <div fxFlex="50">
+    <mat-card class="mb-3 mat-elevation-z3">
+      <mat-card-title>MQTT Clients</mat-card-title>
+      <mat-card-subtitle>MQTT client to publish/subscribe to a topic on a remote MQTT broker</mat-card-subtitle>
+    </mat-card>
+    <div fxLayout="row wrap" fxLayoutGap="1rem grid" class="mb-3">
+      <div fxFlex="25"><a class="card-outline">Add New Client</a></div>
+    </div>
+  </div>
+</div>

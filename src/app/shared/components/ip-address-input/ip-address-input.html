@@ -1,0 +1,4 @@
+<ng-container *ngFor="let i of [0, 1, 2, 3]; let first = first">
+  <ng-container *ngIf="!first">.</ng-container>
+  <input appIpAddressInputPart type="text" [placeholder]="_placeholders[i]" [(num)]="_values[i]" (numChange)="onInputChange()" [disabled]="disabled || disabledParts[i]">
+</ng-container>

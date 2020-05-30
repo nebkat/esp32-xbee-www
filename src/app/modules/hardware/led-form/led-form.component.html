@@ -1,0 +1,86 @@
+<mat-card>
+  <form [formGroup]="form">
+    <mat-card-title>
+      LED
+      <button mat-icon-button class="float-right mb-n5">
+        <mat-icon>delete</mat-icon>
+      </button>
+    </mat-card-title>
+    <mat-card-subtitle>
+      <input type="text" matInput formControlName="name" maxlength="16" placeholder="(Unnamed)">
+    </mat-card-subtitle>
+    <mat-card-content>
+      <mat-form-field appearance="outline" fxFill>
+        <mat-label>Type</mat-label>
+        <mat-select formControlName="type">
+          <mat-option value="simple">Simple (on/off)</mat-option>
+          <mat-option value="channels">RGB (separate channels)</mat-option>
+          <mat-option value="strip">RGB strip (3-wire/4-wire)</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <div fxLayout="flex wrap" fxLayoutGap="0.5rem grid" [ngSwitch]="form.controls['type'].value">
+        <ng-container *ngSwitchCase="'simple'" formGroupName="simple">
+          <mat-form-field appearance="outline" fxFlex="33.33" floatLabel="always">
+            <mat-label>Led pin</mat-label>
+            <app-dialog-select formControlName="pin" [dialogComponent]="GpioDialogComponent" #selection [placeholder]="">
+              <app-dialog-select-trigger>GPIO {{selection.value}}</app-dialog-select-trigger>
+            </app-dialog-select>
+          </mat-form-field>
+        </ng-container>
+        <ng-container *ngSwitchCase="'channels'" formGroupName="channels">
+          <mat-form-field appearance="outline" fxFlex="33.33" floatLabel="always">
+            <mat-label>Red pin</mat-label>
+            <app-dialog-select formControlName="redPin" [dialogComponent]="GpioDialogComponent" #selectionA [placeholder]="">
+              <app-dialog-select-trigger>GPIO {{selectionA.value}}</app-dialog-select-trigger>
+            </app-dialog-select>
+          </mat-form-field>
+          <mat-form-field appearance="outline" fxFlex="33.33" floatLabel="always">
+            <mat-label>Green pin</mat-label>
+            <app-dialog-select formControlName="greenPin" [dialogComponent]="GpioDialogComponent" #selectionB [placeholder]="">
+              <app-dialog-select-trigger>GPIO {{selectionB.value}}</app-dialog-select-trigger>
+            </app-dialog-select>
+          </mat-form-field>
+          <mat-form-field appearance="outline" fxFlex="33.33" floatLabel="always">
+            <mat-label>Blue pin</mat-label>
+            <app-dialog-select formControlName="bluePin" [dialogComponent]="GpioDialogComponent" #selectionC [placeholder]="">
+              <app-dialog-select-trigger>GPIO {{selectionC.value}}</app-dialog-select-trigger>
+            </app-dialog-select>
+          </mat-form-field>
+        </ng-container>
+        <ng-container *ngSwitchCase="'strip'" formGroupName="strip">
+          <mat-form-field appearance="outline" fxFlexFill floatLabel="always">
+            <mat-label>Chipset</mat-label>
+            <mat-select formControlName="chipset">
+              <mat-option *ngFor="let chipset of ledChipsets" [value]="chipset">{{chipset.toUpperCase()}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+          <mat-form-field appearance="outline" fxFlex="1 0 1rem" floatLabel="always">
+            <mat-label>RGB order</mat-label>
+            <mat-select formControlName="rgbOrder">
+              <mat-option *ngFor="let rgbOrder of ledRgbOrders" [value]="rgbOrder">{{rgbOrder.toUpperCase()}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+          <mat-form-field appearance="outline" fxFlex="1 0 1rem" floatLabel="always">
+            <mat-label>Strip length</mat-label>
+            <input type="text" matInput formControlName="stripLength">
+            <mat-error *ngIf="!!form.get(['strip', 'stripLength']).errors?.min || !!form.get(['strip', 'stripLength']).errors?.max || !!form.get(['strip', 'stripLength']).errors?.pattern">
+              Must be an integer between 1 and 1,024
+            </mat-error>
+          </mat-form-field>
+          <mat-form-field appearance="outline" fxFlex="1 0 1rem" floatLabel="always">
+            <mat-label>Data pin</mat-label>
+            <app-dialog-select formControlName="dataPin" [dialogComponent]="GpioDialogComponent" #selectionA [placeholder]="">
+              <app-dialog-select-trigger>GPIO {{selectionA.value}}</app-dialog-select-trigger>
+            </app-dialog-select>
+          </mat-form-field>
+          <mat-form-field appearance="outline" fxFlex="1 0 1rem" floatLabel="always" [hidden]="!ledSpiChipsets.includes(form.get(['strip', 'chipset']).value)">
+            <mat-label>Clock pin</mat-label>
+            <app-dialog-select formControlName="clockPin" [dialogComponent]="GpioDialogComponent" #selectionB placeholder="Optional">
+              <app-dialog-select-trigger>GPIO {{selectionB.value}}</app-dialog-select-trigger>
+            </app-dialog-select>
+          </mat-form-field>
+        </ng-container>
+      </div>
+    </mat-card-content>
+  </form>
+</mat-card>

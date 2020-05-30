@@ -1,0 +1,58 @@
+mat-row.station-row.cdk-drag-animating {
+  transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+.mat-column-header {
+  flex: 0 0 100px;
+
+  h4 {
+    margin-bottom: 0;
+  }
+}
+
+mat-table {
+  mat-header-row, mat-footer-row {
+    min-height: 30px;
+  }
+
+  mat-row.station-row {
+    cursor: pointer;
+
+    .handle {
+      cursor: move;
+    }
+
+    .ssid.saved {
+      font-weight: bold;
+    }
+  }
+
+  &.cdk-drop-list-dragging {
+    mat-row.station-row {
+      transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+
+      &.cdk-drag-placeholder {
+        opacity: 0;
+      }
+    }
+  }
+
+  &:not(.cdk-drop-list-dragging) {
+    mat-row.station-row {
+      &:hover {
+        background: whitesmoke;
+      }
+    }
+  }
+}
+
+mat-spinner {
+  display: inline-block;
+  margin: 3px;
+
+  ::ng-deep circle {
+    stroke: #000000 !important;
+  }
+}
+
+

@@ -1,7 +1,43 @@
-<mat-toolbar>
-  <span>{{title}}</span>
+<mat-toolbar fxHide.gt-md>
+  <button mat-icon-button (click)="sidenav.toggle()">
+    <mat-icon>menu</mat-icon>
+  </button>
+  <span>ESP32-XBee</span>
 </mat-toolbar>
-<mat-drawer-container class="example-container">
-  <mat-drawer mode="side" opened>Drawer content</mat-drawer>
-  <mat-drawer-content>Main content</mat-drawer-content>
-</mat-drawer-container>
+<mat-sidenav-container>
+  <mat-sidenav mode="side" opened [fixedInViewport]="true">
+    <h2 class="m-3">
+      ESP32 XBee
+      <small>
+        <a routerLink="/updates">{{version}}</a>
+      </small>
+    </h2>
+    <div class="m-3">
+      <mat-icon>wifi_tethering</mat-icon>
+      <mat-icon svgIcon="wifi"></mat-icon>
+      <mat-icon svgIcon="cell_wifi"></mat-icon>
+      <mat-icon svgIcon="signal_wifi_0_bar"></mat-icon>
+      <mat-icon svgIcon="signal_wifi_1_bar"></mat-icon>
+      <mat-icon svgIcon="signal_wifi_2_bar"></mat-icon>
+      <mat-icon svgIcon="signal_wifi_3_bar_lock"></mat-icon>
+      <mat-icon svgIcon="signal_wifi_4_bar"></mat-icon>
+      <mat-icon>public</mat-icon>
+    </div>
+    <mat-nav-list>
+      <mat-divider></mat-divider>
+      <a mat-list-item routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}"><mat-icon mat-list-icon>dashboard</mat-icon> Dashboard</a>
+      <a mat-list-item routerLink="/admin" routerLinkActive="active"><mat-icon mat-list-icon>security</mat-icon> Admin</a>
+      <a mat-list-item routerLink="/wifi" routerLinkActive="active"><mat-icon mat-list-icon>wifi</mat-icon> WiFi</a>
+      <mat-divider></mat-divider>
+      <a mat-list-item routerLink="/hardware" routerLinkActive="active"><mat-icon mat-list-icon>developer_board</mat-icon> Hardware</a>
+      <a mat-list-item routerLink="/protocols" routerLinkActive="active"><mat-icon mat-list-icon>device_hub</mat-icon> Protocols</a>
+      <a mat-list-item routerLink="/routing" routerLinkActive="active"><mat-icon mat-list-icon>settings_ethernet</mat-icon> Routing</a>
+      <mat-divider></mat-divider>
+      <a mat-list-item routerLink="/logs" routerLinkActive="active"><mat-icon mat-list-icon>list_alt</mat-icon> Logs</a>
+      <a mat-list-item routerLink="/updates" routerLinkActive="active"><mat-icon mat-list-icon>system_update_alt</mat-icon> Updates</a>
+    </mat-nav-list>
+  </mat-sidenav>
+  <mat-sidenav-content class="p-3">
+    <router-outlet></router-outlet>
+  </mat-sidenav-content>
+</mat-sidenav-container>

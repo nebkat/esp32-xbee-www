@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
+import { MatSidenav } from "@angular/material/sidenav";
 
 @Component({
   selector: 'app-root',
@@ -6,5 +7,7 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  title = 'esp32-xbee-www';
+  version = 'v0.5.1';
+
+  @ViewChild(MatSidenav) sidenav: MatSidenav;
 }

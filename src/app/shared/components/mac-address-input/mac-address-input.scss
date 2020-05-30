@@ -1,0 +1,23 @@
+.app-mac-address-input {
+  display: flex;
+
+  opacity: 0;
+  transition: opacity 200ms;
+
+  cursor: pointer;
+
+  &.app-mac-address-input-label-floating {
+    opacity: 1;
+  }
+}
+
+input {
+  border: none;
+  background: none;
+  padding: 0;
+  outline: none;
+  font: inherit;
+  text-align: center;
+  width: 0;
+  flex-grow: 1;
+}

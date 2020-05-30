@@ -1,0 +1,120 @@
+<h2 mat-dialog-title>WiFi Connection: {{ssid}}</h2>
+<mat-dialog-content>
+ <form [formGroup]="form">
+   <div fxLayout="flex wrap" fxLayoutGap="0.5rem grid">
+     <mat-form-field appearance="outline" fxFlex="0 1" [hidden]="scanned">
+       <mat-label>SSID</mat-label>
+       <input matInput formControlName="ssid" type="text" data-lpignore="true" style="padding-right: 35px;">
+       <button mat-icon-button
+               matSuffix
+               (click)="form.get('hidden').setValue(!form.get('hidden').value)"
+               matTooltip="Access point SSID visibility (if hidden, a connection attempt will be made even if the SSID is not visible in scans)"
+               style="margin-left: -35px">
+         <mat-icon>{{form.get('hidden').value ? 'visibility_off' : 'visibility'}}</mat-icon>
+       </button>
+     </mat-form-field>
+     <!--<mat-form-field appearance="outline" fxFlex>
+       <mat-label>BSSID</mat-label>
+       <app-mac-address-input valueType="number"></app-mac-address-input>
+     </mat-form-field>-->
+   </div>
+   <div fxLayout="flex wrap" fxLayoutGap="0.5rem grid">
+     <mat-form-field appearance="outline" [hidden]="scanned">
+       <mat-label>Authentication mode</mat-label>
+       <mat-select formControlName="security">
+         <mat-option *ngFor="let authMode of wifiAuthModes" [value]="authMode">{{authMode | wifiAuthModeName}}</mat-option>
+       </mat-select>
+     </mat-form-field>
+     <ng-container [ngSwitch]="form.controls['security'].value">
+       <ng-container *ngSwitchCase="'OPEN'"></ng-container>
+       <ng-container *ngSwitchDefault>
+         <mat-form-field appearance="outline">
+           <mat-label>Security key</mat-label>
+           <input formControlName="key" matInput #key type="password" data-lpignore="true" style="padding-right: 35px;">
+           <button mat-icon-button
+                   matSuffix
+                   (click)="key.type = (key.type === 'password' ? 'text' : 'password')"
+                   style="margin-left: -35px"
+                   [hidden]="key.value.length === 0">
+             <mat-icon>{{key.type === 'text' ? 'visibility_off' : 'visibility'}}</mat-icon>
+           </button>
+         </mat-form-field>
+       </ng-container>
+       <ng-container *ngSwitchCase="'WPA2_ENTERPRISE'" formGroupName="enterprise">
+         <mat-form-field appearance="outline">
+           <mat-label>Anonymous identity</mat-label>
+           <input formControlName="identity" matInput type="text">
+         </mat-form-field>
+         <mat-form-field appearance="outline">
+           <mat-label>Username</mat-label>
+           <input formControlName="username" matInput type="text">
+         </mat-form-field>
+         <mat-form-field appearance="outline">
+           <mat-label>Password</mat-label>
+           <input formControlName="password" matInput type="password">
+         </mat-form-field>
+       </ng-container>
+     </ng-container>
+   </div>
+   <div fxLayout="flex" fxLayoutGap="0.5rem grid">
+     <mat-form-field appearance="outline">
+       <mat-label>IP configuration</mat-label>
+       <mat-select formControlName="static">
+         <mat-option [value]="false">Automatic (DHCP)</mat-option>
+         <mat-option [value]="true">Manual (static)</mat-option>
+       </mat-select>
+     </mat-form-field>
+   </div>
+   <div formGroupName="ip" fxLayout="flex" fxLayoutGap="0.5rem grid" [hidden]="!form.controls['static'].value">
+     <mat-form-field appearance="outline">
+       <mat-label>IP address</mat-label>
+       <app-ip-address-input
+         formControlName="ip"
+         valueType="number"
+         [errorStateMatcher]="ipErrorStateMatcher">
+       </app-ip-address-input>
+       <mat-hint>
+         {{subnetIpRange?.map(ipToString).join(' - ')}}
+       </mat-hint>
+     </mat-form-field>
+     <mat-form-field appearance="outline">
+       <mat-label>Gateway address</mat-label>
+       <app-ip-address-input
+         formControlName="gw"
+         valueType="number"
+         [errorStateMatcher]="ipErrorStateMatcher">
+       </app-ip-address-input>
+     </mat-form-field>
+     <mat-form-field appearance="outline" style="width: 80px">
+       <mat-label>Subnet</mat-label>
+       <mat-select formControlName="mask">
+         <mat-option *ngFor="let i of [8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30]" [value]="subnetToMask(i)">/ {{i}}</mat-option>
+       </mat-select>
+     </mat-form-field>
+   </div>
+   <div formGroupName="dns" fxLayout="flex" fxLayoutGap="0.5rem grid" [hidden]="!form.controls['static'].value">
+     <mat-form-field appearance="outline">
+       <mat-label>Primary DNS</mat-label>
+       <app-ip-address-input
+         formControlName="primary"
+         valueType="number"
+         placeholder="1.1.1.1">
+       </app-ip-address-input>
+     </mat-form-field>
+     <mat-form-field appearance="outline">
+       <mat-label>Backup DNS</mat-label>
+       <app-ip-address-input
+         formControlName="backup"
+         valueType="number"
+         placeholder="1.0.0.1">
+       </app-ip-address-input>
+     </mat-form-field>
+   </div>
+   <!-- Fix overflow from flex divs -->
+   <div class="mb-2"></div>
+ </form>
+</mat-dialog-content>
+<div mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>CANCEL</button>
+  <button mat-button [mat-dialog-close]="result" [disabled]="!form.valid">SAVE</button>
+</div>

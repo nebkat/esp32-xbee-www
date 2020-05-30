@@ -1,0 +1,138 @@
+<mat-card>
+  <mat-card-title>
+    WiFi Connections
+    <button mat-button (click)="onScanClick()" class="float-right" [disabled]="scanning">
+      <mat-spinner [diameter]="18" [hidden]="!scanning"></mat-spinner>
+      <mat-icon [hidden]="scanning">refresh</mat-icon>
+      Scan
+    </button>
+    <div class="float-right mr-1" matTooltip="Maximum number of connections ({{maxConnections}}) exceeded"
+         [matTooltipDisabled]="data.length < maxConnections">
+      <button mat-button (click)="onNewClick()" [disabled]="data.length >= maxConnections"
+              matTooltip="Add a new connection manually">
+        <mat-icon>add</mat-icon>
+        New
+      </button>
+    </div>
+  </mat-card-title>
+  <mat-card-subtitle>Available & Saved</mat-card-subtitle>
+  <mat-card-content>
+    <mat-table [dataSource]="available">
+      <ng-container matColumnDef="header">
+        <mat-header-cell *matHeaderCellDef>
+          <h4>Available</h4>
+        </mat-header-cell>
+        <mat-cell *matCellDef="let row">
+          <mat-icon
+            svgIcon="signal_wifi_{{rssiIconStrength(row.rssi)}}_bar{{row.authmode === 'OPEN' ? '' : '_lock'}}"></mat-icon>
+          {{row.rssi}}dB
+        </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="ssid">
+        <mat-header-cell *matHeaderCellDef>SSID</mat-header-cell>
+        <mat-cell *matCellDef="let row">
+          <div>
+            <h4 class="ssid mb-0">{{row.ssid}}</h4>
+            <small>{{row.bssid}} <i>(ch{{row.channel}})</i></small>
+          </div>
+        </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="auth">
+        <mat-header-cell *matHeaderCellDef>Security</mat-header-cell>
+        <mat-cell *matCellDef="let row">
+          <mat-icon>{{row.authmode === 'OPEN' ? 'lock_open' : 'lock'}}</mat-icon>
+          {{row.authmode | wifiAuthModeName}}
+        </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="action">
+        <mat-header-cell *matHeaderCellDef>Action</mat-header-cell>
+        <mat-cell *matCellDef="let row">
+          <ng-container [ngSwitch]="isSavedConnection(row)">
+            <div *ngSwitchCase="false" matTooltip="Maximum number of connections ({{maxConnections}}) exceeded"
+                 [matTooltipDisabled]="data.length < maxConnections">
+              <button mat-stroked-button (click)="onSaveClick(row)" [disabled]="data.length >= maxConnections">
+                Save
+              </button>
+            </div>
+            <button *ngSwitchCase="true" mat-stroked-button (click)="onEditClick(findSavedConnection(row))">
+              Edit
+            </button>
+          </ng-container>
+        </mat-cell>
+      </ng-container>
+
+      <mat-header-row *matHeaderRowDef="availableColumnsToDisplay"></mat-header-row>
+      <mat-row
+        *matRowDef="let row; columns: availableColumnsToDisplay;"
+        class="station-row"
+        [class.saved]="isSavedConnection(row)">
+      </mat-row>
+    </mat-table>
+
+    <mat-table [dataSource]="saved" cdkDropList [cdkDropListData]="data" (cdkDropListDropped)="onListDrop($event)">
+      <ng-container matColumnDef="header">
+        <mat-header-cell *matHeaderCellDef>
+          <h4>Saved</h4>
+        </mat-header-cell>
+        <mat-cell *matCellDef>
+          <mat-icon class="handle">drag_handle</mat-icon>
+        </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="ssid">
+        <mat-header-cell *matHeaderCellDef>SSID</mat-header-cell>
+        <mat-cell *matCellDef="let row">
+          <div>
+            <h4 class="mb-0">
+              {{row.ssid}}
+              <mat-icon *ngIf="row.hidden" [inline]="true" style="vertical-align: bottom" matTooltip="Hidden SSID">
+                visibility_off
+              </mat-icon>
+            </h4>
+            <small>
+              <span *ngIf="row.bssid !== undefined">{{row.bssid | mac48}}</span>
+              <i *ngIf="row.channel !== undefined">(ch{{row.channel}})</i>
+            </small>
+          </div>
+        </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="auth">
+        <mat-header-cell *matHeaderCellDef>Security</mat-header-cell>
+        <mat-cell *matCellDef="let row">
+          <mat-icon>{{row.security === 'OPEN' ? 'lock_open' : 'lock'}}</mat-icon>
+          {{row.security | wifiAuthModeName}}
+        </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="action">
+        <mat-header-cell *matHeaderCellDef>Action</mat-header-cell>
+        <mat-cell mat-cell *matCellDef="let row">
+          <button mat-stroked-button class="mr-1" (click)="onEditClick(row)">Edit</button>
+          <button mat-stroked-button class="mr-1" (click)="onForgetClick(row)">Forget</button>
+        </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="footer">
+        <mat-footer-cell *matFooterCellDef [attr.colspan]="savedColumnsToDisplay.length">
+          <small class="text-center" fxFlex="1 1 100%">
+            Connection priority is determined by list order.
+            Max {{maxConnections}} saved connections.
+          </small>
+        </mat-footer-cell>
+      </ng-container>
+
+      <mat-header-row *matHeaderRowDef="savedColumnsToDisplay"></mat-header-row>
+      <mat-row
+        *matRowDef="let row; columns: savedColumnsToDisplay;"
+        cdkDrag
+        cdkDragBoundary=".cdk-drop-list"
+        class="station-row"
+      ></mat-row>
+      <mat-footer-row *matFooterRowDef="['footer']"></mat-footer-row>
+    </mat-table>
+  </mat-card-content>
+</mat-card>

@@ -1,0 +1,65 @@
+button.badge {
+  padding: 0 7px;
+  min-width: unset;
+  line-height: 20px;
+
+  color: white;
+
+  &.level {
+    &.verbose {
+      color: #212529;
+      background-color: #f8f9fa;
+    }
+
+    &.debug {
+      color: white;
+      background-color: #6c757d;
+    }
+
+    &.info {
+      color: white;
+      background-color: #28a745;
+    }
+
+    &.warning {
+      color: #212529;
+      background-color: #ffc107;
+    }
+
+    &.error {
+      color: white;
+      background-color: #dc3545;
+    }
+
+    &.reset {
+      color: white;
+      background-color: #17a2b8;
+    }
+  }
+}
+
+mat-table {
+  mat-row {
+    min-height: 30px;
+  }
+
+  .mat-column-index {
+    flex: 0 0 50px;
+  }
+
+  .mat-column-time {
+    flex: 0 0 100px;
+  }
+
+  .mat-column-level {
+    flex: 0 0 80px;
+  }
+
+  .mat-column-tag {
+    flex: 0 0 100px;
+  }
+
+  mat-cell.mat-column-comment {
+    font-family: "Courier New", Courier, monospace;
+  }
+}
